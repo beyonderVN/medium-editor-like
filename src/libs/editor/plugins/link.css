@@ -1,0 +1,22 @@
+.linkInput {
+  height: 34px;
+  line-height: 34px;
+  width: 220px;
+  padding: 0 12px;
+  font-size: 15px;
+  font-family: inherit;
+  background-color: transparent;
+  border: none;
+}
+
+.linkInput:focus {
+  outline: none;
+}
+
+.linkInput::placeholder {
+  color: #aaa;
+}
+
+.linkInputInvalid {
+  color: #e65757;
+}

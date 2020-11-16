@@ -1,0 +1,63 @@
+{
+  "name": "create-react-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@tailwindcss/typography": "^0.2.0",
+    "@tailwindcss/ui": "^0.7.2",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "classnames": "^2.2.6",
+    "draft-js": "^0.11.7",
+    "draft-js-alignment-plugin": "^2.0.6",
+    "draft-js-anchor-plugin": "^2.0.3",
+    "draft-js-buttons": "^2.0.2",
+    "draft-js-counter-plugin": "^2.0.2",
+    "draft-js-divider-plugin": "^0.2.1",
+    "draft-js-drag-n-drop-plugin": "^2.0.4",
+    "draft-js-focus-plugin": "^3.0.1",
+    "draft-js-image-plugin": "^2.0.7",
+    "draft-js-inline-toolbar-plugin": "^3.0.1",
+    "draft-js-linkify-plugin": "^2.0.2",
+    "draft-js-list-plugin": "^1.0.2",
+    "draft-js-mention-plugin": "^3.1.5",
+    "draft-js-plugins-editor": "^3.0.0",
+    "draft-js-resizeable-plugin": "^2.0.9",
+    "draft-js-side-toolbar-plugin": "^3.0.2",
+    "draft-js-static-toolbar-plugin": "^3.0.1",
+    "draft-js-video-plugin": "^2.0.2",
+    "draftjs-utils": "^0.10.2",
+    "node-sass": "^4.14.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-scripts": "4.0.0",
+    "react-use": "^15.3.4",
+    "tailwindcss": "^1.9.6",
+    "web-vitals": "^0.2.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
