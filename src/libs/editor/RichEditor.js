@@ -24,6 +24,7 @@ import { LineOutlined } from "./assets/svgs";
 import Icon from "./components/Icon";
 import createDividerPlugin from "./plugins/divider";
 import createImagePlugin from "./plugins/image";
+import createEmbedPlugin from "./plugins/embed";
 import createAlignmentPlugin from "./plugins/imageAlignment";
 import inlineToolbarPlugin, { InlineToolBar } from "./plugins/inlineToolbar";
 import linkPlugin from "./plugins/link";
@@ -48,6 +49,9 @@ const decorator = composeDecorators(
   blockDndPlugin.decorator
 );
 const imagePlugin = createImagePlugin({
+  decorator,
+});
+const embedPlugin = createEmbedPlugin({
   decorator,
 });
 const mentionPlugin = createMentionPlugin({
@@ -78,6 +82,7 @@ const plugins = [
   focusPlugin,
   alignmentPlugin,
   imagePlugin,
+  embedPlugin,
   linkPlugin,
   dividerPlugin,
   sideToolbarPlugin,

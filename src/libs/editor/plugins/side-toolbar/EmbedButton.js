@@ -2,15 +2,10 @@ import React, { useRef } from "react";
 import { EmbedOutline } from "../../assets/svgs";
 import Icon from "../../components/Icon";
 import { message } from "../../utils";
-const resToJson = (res) => res.json();
-export default function EmbedButton({ onClick }) {
-  const handleSubmit = (url) => {
-    fetch(
-      `https://8080-37f05222-627a-4ff4-af39-91c7ca5a20d0.asia-southeast1.cloudshell.dev/getUrlMetadata?url=` +
-        url
-    )
-      .then(resToJson)
-      .then(console.log);
+import addEmbed from "../embed/modifiers/addEmbed";
+export default function EmbedButton(props) {
+  const handleSubmit = (imageUrl) => {
+    props.setEditorState(addEmbed(props.getEditorState(), imageUrl));
   };
   return (
     <div className="buttonWrapper relative">

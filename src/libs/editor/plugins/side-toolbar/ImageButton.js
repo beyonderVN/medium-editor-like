@@ -38,7 +38,7 @@ export default function AddImage({ onClick, ...props }) {
           type="file"
           id="add_image"
           name="add_image"
-          className="absolute top-0 left-0 wfull0 h-full opacity-0"
+          className="absolute top-0 left-0 w-full h-full opacity-0"
           // hidden
         />
       </button>
