@@ -1,29 +1,26 @@
-import React from "react";
-import { createStore } from "../utils";
-import Toolbar from "./components/Toolbar";
-export default function createSideToolbarplugin(config = {}) {
-  const defaultPostion = "left";
-  const store = createStore({
-    isVisible: false,
-  });
+import React, { useContext } from 'react'
+import EditorContext from '../../EditorContext'
+import Toolbar from './components/Toolbar'
+import DividerButton from './DividerButton'
+import EmbedButton from './EmbedButton'
+import ImageButton from './ImageButton'
+import './index.scss'
 
-  const { position = defaultPostion } = config;
-
-  const SideToolbar = (props) => (
-    <Toolbar {...props} store={store} position={position} />
-  );
-
-  return {
-    initialize: ({ setEditorState, getEditorState, getEditorRef }) => {
-      store.updateItem("getEditorState", getEditorState);
-      store.updateItem("setEditorState", setEditorState);
-      store.updateItem("getEditorRef", getEditorRef);
-    },
-    // Re-Render the toolbar on every change
-    onChange: (editorState) => {
-      store.updateItem("editorState", editorState);
-      return editorState;
-    },
-    SideToolbar,
-  };
+export default function SideToolbar({
+  context = EditorContext,
+  position,
+  ...props
+} = {}) {
+  const { getEditorRef, editorState } = useContext(context)
+  return (
+    <Toolbar
+      {...props}
+      editorRef={getEditorRef()}
+      editorState={editorState}
+      position={position}>
+      <ImageButton className="sidebuttonwrap bg-white button--scale u-transitionSeries w-10 h-10  border boder-gray-600 flex justify-center items-center background-100 hover:background-200 shadow-2xl z-10 rounded-full" />
+      <EmbedButton className="sidebuttonwrap bg-white button--scale u-transitionSeries w-10 h-10  border boder-gray-600 flex justify-center items-center background-100 hover:background-200 shadow-2xl z-10 rounded-full" />
+      <DividerButton className="sidebuttonwrap bg-white button--scale u-transitionSeries w-10 h-10  border boder-gray-600 flex justify-center items-center background-100 hover:background-200 shadow-2xl z-10 rounded-full" />
+    </Toolbar>
+  )
 }

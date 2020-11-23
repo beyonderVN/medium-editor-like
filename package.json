@@ -12,6 +12,7 @@
     "draft-js": "^0.11.7",
     "draft-js-alignment-plugin": "^2.0.6",
     "draft-js-anchor-plugin": "^2.0.3",
+    "draft-js-block-breakout-plugin": "^2.0.1",
     "draft-js-buttons": "^2.0.2",
     "draft-js-counter-plugin": "^2.0.2",
     "draft-js-divider-plugin": "^0.2.1",
@@ -35,6 +36,7 @@
     "react-scripts": "4.0.0",
     "react-use": "^15.3.4",
     "tailwindcss": "^1.9.6",
+    "unsplash-js": "^6.3.0",
     "web-vitals": "^0.2.4"
   },
   "scripts": {

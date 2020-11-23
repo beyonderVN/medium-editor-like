@@ -1,61 +1,25 @@
-import React from 'react'
+import {
+  createBlockRendererFn,
+  createBlockTypeIsActive,
+  createInsertAtomicBlock,
+} from '../../utils'
 import DefaultDivider from './components/DefaultDivider'
-import DefaultButton from './components/DividerButton'
-import addDivider from './modifiers/addDivider'
-
+import { type } from './constains'
 const createDividerPlugin = ({
-  entityType = 'divider',
+  entityType = type,
   dividerComponent = DefaultDivider,
-  buttonComponent = DefaultButton,
-  decorator
+  decorator,
 } = {}) => {
   let Divider = dividerComponent
-
   if (typeof decorator === 'function') {
     Divider = decorator(Divider)
   }
-
-  const ThemedDivider = props => (
-    <Divider {...props} />
-  )
-  const Button = buttonComponent
-  const DividerButton = props => (
-    <Button
-      {...props}
-      addDivider={addDivider(
-        entityType
-      )}
-    />
-  )
-
+  const handleInsert = createInsertAtomicBlock(entityType)
+  const blockTypeIsActive = createBlockTypeIsActive(entityType)
   return {
-    blockRendererFn: (
-      block,
-      { getEditorState }
-    ) => {
-      if (
-        block.getType() === 'atomic'
-      ) {
-        const contentState = getEditorState().getCurrentContent()
-        const entity = block.getEntityAt(
-          0
-        )
-        if (!entity) return null
-        const type = contentState
-          .getEntity(entity)
-          .getType()
-        if (type === entityType) {
-          return {
-            component: ThemedDivider,
-            editable: false
-          }
-        }
-      }
-
-      return null
-    },
-    DividerButton,
-    addDivider: addDivider(entityType)
+    blockRendererFn: createBlockRendererFn(entityType, Divider),
+    blockTypeIsActive,
+    handleInsert,
   }
 }
 

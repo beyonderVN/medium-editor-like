@@ -1,0 +1,14 @@
+{
+    "editor.tabSize": 2,
+    "editor.foldingStrategy": "indentation",
+    "prettier.printWidth": 80,
+    "prettier.semi": false,
+    "prettier.singleQuote": true,
+    "prettier.jsxBracketSameLine": true,
+    "git.autofetch": false,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true,
+      "source.fixAll.eslint": true
+    },
+    "editor.formatOnSave": true
+}

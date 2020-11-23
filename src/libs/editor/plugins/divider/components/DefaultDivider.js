@@ -21,13 +21,12 @@ export default function Divider({
     ...elementProps
   } = otherProps
   const combinedClassName = classnames(
-    theme.divider,
+    'w-full h-4 flex items-center',
     className
   )
   return (
-    <hr
-      {...elementProps}
-      className={combinedClassName}
-    />
+    <div {...elementProps} className={combinedClassName}>
+      <hr className="w-full" />
+    </div>
   )
 }

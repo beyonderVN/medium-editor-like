@@ -1,130 +1,76 @@
-import React, { Component } from 'react'
+import React, { useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
-
-const getDisplayName = WrappedComponent => {
-  const component =
-    WrappedComponent.WrappedComponent ||
-    WrappedComponent
-  return (
-    component.displayName ||
-    component.name ||
-    'Component'
-  )
+const getDisplayName = (WrappedComponent) => {
+  const component = WrappedComponent.WrappedComponent || WrappedComponent
+  return component.displayName || component.name || 'Component'
 }
+const createDecorator = ({ store }) => (WrappedComponent) => {
+  const Component = (props) => {
+    const { blockProps, style, ...elementProps } = props
+    const ref = useRef()
+    useEffect(() => {
+      const blockNode = ref.current
+      if (!blockNode) return
 
-export default ({
-  store
-}) => WrappedComponent =>
-  class BlockAlignmentDecorator extends Component {
-    static displayName = `Alignment(${getDisplayName(
-      WrappedComponent
-    )})`
-    static WrappedComponent =
-      WrappedComponent.WrappedComponent ||
-      WrappedComponent
-
-    componentDidUpdate = () => {
-      if (
-        this.props.blockProps
-          .isFocused &&
-        this.props.blockProps
-          .isCollapsedSelection
-      ) {
-        // TODO figure out if and how to achieve this without fetching the DOM node
-        // eslint-disable-next-line react/no-find-dom-node
-        const blockNode = ReactDOM.findDOMNode(
-          this
-        )
+      if (blockProps.isFocused && blockProps.isCollapsedSelection) {
+        const selection =
+          store.getItem('getEditorState') &&
+          store.getItem('getEditorState')().getSelection()
+        const blockNode = ReactDOM.findDOMNode(ref.current)
+        console.log({ blockNode, selection })
         const boundingRect = blockNode.getBoundingClientRect()
-        store.updateItem(
-          'setAlignment',
-          this.props.blockProps
-            .setAlignment
-        )
-        store.updateItem(
-          'alignment',
-          this.props.blockProps
-            .alignment
-        )
-        store.updateItem(
-          'boundingRect',
-          boundingRect
-        )
-        store.updateItem(
-          'visibleBlock',
-          this.props.block.getKey()
-        )
-        // Only set visibleBlock to null in case it's the current one. This is important
-        // in case the focus directly switches from one block to the other. Then the
-        // Alignment tool should not be hidden, but just moved.
-      } else if (
-        store.getItem(
-          'visibleBlock'
-        ) === this.props.block.getKey()
-      ) {
-        store.updateItem(
-          'visibleBlock',
-          null
-        )
+        store.updateItem('setAlignment', blockProps.setAlignment)
+        store.updateItem('alignment', blockProps.alignment)
+        store.updateItem('boundingRect', boundingRect)
+        store.updateItem('visibleBlock', props.block.getKey())
+      } else if (store.getItem('visibleBlock') === props.block.getKey()) {
+        store.updateItem('visibleBlock', null)
       }
-    }
+      return () => {
+        store.updateItem('visibleBlock', null)
+      }
+    }, [blockProps, props.block])
 
-    componentWillUnmount() {
-      // Set visibleBlock to null if the block is deleted
-      store.updateItem(
-        'visibleBlock',
-        null
-      )
+    const alignment = blockProps.alignment || 'center'
+    let newStyle = style || {
+      width: '100%',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      display: 'block',
     }
-
-    render() {
-      const {
-        blockProps,
-        style,
-        // using destructuring to make sure unused props are not passed down to the block
-        ...elementProps
-      } = this.props
-      const alignment =
-        blockProps.alignment || 'center'
-      let newStyle = style || {
+    if (alignment === 'left') {
+      newStyle = {
+        ...style,
+        width: '50%',
+        marginRight: '1.4em',
+        float: 'left',
+      }
+    } else if (alignment === 'center') {
+      newStyle = {
+        ...style,
         width: '100%',
         marginLeft: 'auto',
         marginRight: 'auto',
-        display: 'block'
+        display: 'block',
       }
-      if (alignment === 'left') {
-        newStyle = {
-          ...style,
-          width: '50%',
-          marginRight: '1.4em',
-          float: 'left'
-        }
-      } else if (
-        alignment === 'center'
-      ) {
-        newStyle = {
-          ...style,
-          width: '100%',
-          marginLeft: 'auto',
-          marginRight: 'auto',
-          display: 'block'
-        }
-      } else if (
-        alignment === 'right'
-      ) {
-        newStyle = {
-          ...style,
-          width: '50%',
-          marginLeft: '1.4em',
-          float: 'right'
-        }
+    } else if (alignment === 'right') {
+      newStyle = {
+        ...style,
+        width: '50%',
+        marginLeft: '1.4em',
+        float: 'right',
       }
-      return (
-        <WrappedComponent
-          {...elementProps}
-          blockProps={blockProps}
-          style={newStyle}
-        />
-      )
     }
+    return (
+      <WrappedComponent
+        ref={ref}
+        {...elementProps}
+        blockProps={blockProps}
+        style={newStyle}
+      />
+    )
   }
+  Component.displayName = `Alignment(${getDisplayName(WrappedComponent)})`
+  return Component
+}
+export default createDecorator

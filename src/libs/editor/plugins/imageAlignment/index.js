@@ -5,95 +5,60 @@ import { createStore } from '../utils'
 import AlignmentTool from './AlignmentTool'
 import createDecorator from './createDecorator'
 
-const createSetAlignment = (
+const createMergeEntity = (
   contentBlock,
   { getEditorState, setEditorState }
-) => data => {
-  const entityKey = contentBlock.getEntityAt(
-    0
-  )
+) => (data) => {
+  const entityKey = contentBlock.getEntityAt(0)
   if (entityKey) {
-    const editorState = getEditorState()
+    let editorState = getEditorState()
     const contentState = editorState.getCurrentContent()
-    contentState.mergeEntityData(
-      entityKey,
-      { ...data }
+    const newContent = contentState.mergeEntityData(entityKey, { ...data })
+    editorState = EditorState.push(editorState, newContent, 'apply-entity')
+    editorState = EditorState.forceSelection(
+      editorState,
+      editorState.getSelection()
     )
-    setEditorState(
-      EditorState.forceSelection(
-        editorState,
-        editorState.getSelection()
-      )
-    )
+    setEditorState(editorState)
   }
 }
 
-const createAlignmentPlugin = (
-  config = {}
-) => {
+const createAlignmentPlugin = (config = {}) => {
   const store = createStore({
-    isVisible: false
+    isVisible: false,
   })
 
-  const DecoratedAlignmentTool = props => (
-    <AlignmentTool
-      {...props}
-      store={store}
-    />
+  const DecoratedAlignmentTool = (props) => (
+    <AlignmentTool {...props} store={store} />
   )
 
   return {
-    initialize: ({
-      getReadOnly,
-      getEditorState,
-      setEditorState
-    }) => {
-      store.updateItem(
-        'getReadOnly',
-        getReadOnly
-      )
-      store.updateItem(
-        'getEditorState',
-        getEditorState
-      )
-      store.updateItem(
-        'setEditorState',
-        setEditorState
-      )
+    initialize: ({ getReadOnly, getEditorState, setEditorState }) => {
+      store.updateItem('getReadOnly', getReadOnly)
+      store.updateItem('getEditorState', getEditorState)
+      store.updateItem('setEditorState', setEditorState)
     },
     decorator: createDecorator({
       config,
-      store
+      store,
     }),
-    blockRendererFn: (
-      contentBlock,
-      { getEditorState, setEditorState }
-    ) => {
-      const entityKey = contentBlock.getEntityAt(
-        0
-      )
+    blockRendererFn: (contentBlock, { getEditorState, setEditorState }) => {
+      const entityKey = contentBlock.getEntityAt(0)
       const contentState = getEditorState().getCurrentContent()
       const alignmentData = entityKey
-        ? contentState.getEntity(
-            entityKey
-          ).data
+        ? contentState.getEntity(entityKey).data
         : {}
       return {
         props: {
-          alignment:
-            alignmentData.alignment ||
-            'default',
-          setAlignment: createSetAlignment(
-            contentBlock,
-            {
-              getEditorState,
-              setEditorState
-            }
-          )
-        }
+          alignment: alignmentData.alignment || 'center',
+          setAlignment: createMergeEntity(contentBlock, {
+            getEditorState,
+            setEditorState,
+          }),
+        },
       }
     },
-    AlignmentTool: DecoratedAlignmentTool
+    AlignmentTool: DecoratedAlignmentTool,
   }
 }
 export default createAlignmentPlugin

@@ -1,38 +1,18 @@
-import React from "react";
-import EmbedComponent from "./Embed";
-import addEmbed from "./modifiers/addEmbed";
-export default function createImagePlugin(config = {}) {
-  let Embed = config.imageComponent || EmbedComponent;
-  if (config.decorator) {
-    Embed = config.decorator(Embed);
+import { createBlockRendererFn, createInsertAtomicBlock } from '../../utils'
+import { type } from './constains'
+import ImageComponent from './Embed'
+export default function createImagePlugin({
+  entityType = type,
+  component = ImageComponent,
+  decorator,
+}) {
+  let Embed = component
+  if (decorator) {
+    Embed = decorator(Embed)
   }
-  const EnchancedEmbed = (props) => <Embed {...props} />;
+  const handleInsert = createInsertAtomicBlock(entityType)
   return {
-    blockRendererFn: (
-      block,
-      { getEditorState, setEditorState, getReadOnly }
-    ) => {
-      if (block.getType() === "atomic") {
-        const contentState = getEditorState().getCurrentContent();
-        const entity = block.getEntityAt(0);
-        if (!entity) return null;
-        const type = contentState.getEntity(entity).getType();
-        if (type === "EMBED" || type === "embed") {
-          return {
-            component: EnchancedEmbed,
-            editable: false,
-            props: {
-              getEditorState,
-              getReadOnly,
-              setEditorState,
-            },
-          };
-        }
-        return null;
-      }
-
-      return null;
-    },
-    addEmbed,
-  };
+    blockRendererFn: createBlockRendererFn(entityType, Embed),
+    handleInsert,
+  }
 }
