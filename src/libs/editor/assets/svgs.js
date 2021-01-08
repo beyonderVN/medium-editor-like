@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 export const LineOutlined = () => (
   <svg fill="currentColor" width="25" height="25">
     <g fillRule="evenodd">
@@ -6,7 +6,7 @@ export const LineOutlined = () => (
       <path d="M17.45 12H14.3c-.247 0-.45.224-.45.5 0 .274.203.5.45.5h5.4c.248 0 .45-.226.45-.5 0-.276-.202-.5-.45-.5h-2.25z" />
     </g>
   </svg>
-);
+)
 export const CameraOutlined = () => (
   <svg fill="currentColor" width="25" height="25">
     <g fillRule="evenodd">
@@ -14,17 +14,17 @@ export const CameraOutlined = () => (
       <path d="M12.484 15.977a3.474 3.474 0 01-3.488-3.49A3.473 3.473 0 0112.484 9a3.474 3.474 0 013.488 3.488c0 1.94-1.55 3.49-3.488 3.49zm0-6.08c-1.407 0-2.59 1.183-2.59 2.59 0 1.408 1.183 2.593 2.59 2.593 1.407 0 2.59-1.185 2.59-2.592 0-1.406-1.183-2.592-2.59-2.592z" />
     </g>
   </svg>
-);
+)
 export const PlusOutlined = () => (
   <svg fill="currentColor" width="25" height="25">
     <path d="M20 12h-7V5h-1v7H5v1h7v7h1v-7h7" fillRule="evenodd" />
   </svg>
-);
+)
 export const EmbedOutline = () => (
   <svg fill="currentColor" width="25" height="25">
-    <g fill-rule="evenodd">
+    <g fillRule="evenodd">
       <path d="M9.826 7.698l-4.828 4.828 4.828 4.828.652-.7-4.08-4.128L10.53 8.4"></path>
       <path d="M14.514 8.4l4.177 4.126-4.17 4.127.7.7 4.83-4.827-4.83-4.828"></path>
     </g>
   </svg>
-);
+)

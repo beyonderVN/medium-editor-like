@@ -5,7 +5,10 @@ import BlockTypeSelect from '../BlockTypeSelect'
 
 export default function Toolbar({ editorState, editorRef, ...props }) {
   const [open, setOpen] = useState()
-  const toggle = useCallback(() => setOpen(!open), [open])
+  const toggle = useCallback(
+    (boolean) => (boolean === undefined ? setOpen(!open) : setOpen(boolean)),
+    [open]
+  )
   const { position, children } = props
   const [offsetKey, setoffsetKey] = useState()
   const [show, setShow] = useState(false)

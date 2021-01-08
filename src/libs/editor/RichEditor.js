@@ -59,7 +59,13 @@ const RichEditor = ({ editorState, onChange }) => {
     editorStateRef.current = e
     onChangeRef.current && onChangeRef.current(e)
   }, [e])
-
+  function renderPlaceholder(placeholder, editorState) {
+    const contentState = editorState.getCurrentContent()
+    const shouldHide =
+      contentState.hasText() ||
+      contentState.getBlockMap().first().getType() !== 'unstyled'
+    return shouldHide ? '' : placeholder
+  }
   return (
     <EditorContext.Provider
       value={useMemo(
@@ -80,7 +86,7 @@ const RichEditor = ({ editorState, onChange }) => {
         onFocus={onWrapClick}
         className="prose h-full lg:prose-xl RichEditor text-lg md:text-xl md:max-w-2xl lg:max-w-3xl mx-auto mb-4">
         <Editor
-          placeholder={'tell a story'}
+          placeholder={renderPlaceholder('tell a story', e)}
           ref={editorRef}
           editorState={e}
           onChange={setE}
