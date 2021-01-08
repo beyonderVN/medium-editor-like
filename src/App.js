@@ -1,17 +1,25 @@
 import { convertFromRaw, convertToRaw, EditorState } from 'draft-js'
+import LZString from 'lz-string'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import './App.css'
 import Editor from './libs/editor'
 import { PlusOutlined } from './libs/editor/assets/svgs'
 import Icon from './libs/editor/components/Icon'
-
-const encode_b64 = (str) => window.btoa(unescape(encodeURIComponent(str)))
-const decode_b64 = (str) => decodeURIComponent(escape(window.atob(str)))
+const encode = (str) => LZString.compressToEncodedURIComponent(str)
+const decode = (str) => LZString.decompressFromEncodedURIComponent(str)
+window.app = {
+  encode,
+  decode,
+}
 const hash = window.location.hash
+console.log({ hash })
 let initialState = {}
 if (hash && hash.length > 1) {
   try {
-    initialState = JSON.parse(decode_b64(hash.substring(1)))
+    const str = JSON.parse(decode(hash.substring(1)))
+    if (str) {
+      initialState = str
+    }
   } catch (error) {
     console.error(error)
   }
@@ -31,18 +39,22 @@ function App() {
   const [title, setTitle] = useState(initialState.title)
   const handlePublish = useCallback(() => {
     const b64 = localStorage.getItem('draft')
-    prompt('url', `${window.location.origin}#${b64}`)
+    const url = `${window.location.origin}#${b64}`
+    console.log({ url })
+    prompt('url', url)
   }, [])
   useEffect(() => {
     setSaving(true)
     const timeout = setTimeout(() => {
-      const b64 = encode_b64(
+      const b64 = encode(
         JSON.stringify({
           title: title,
           content: convertToRaw(content),
         })
       )
       window.localStorage.setItem('draft', b64)
+      console.log(b64)
+      console.log(decode(b64))
       setSaving(false)
     }, 400)
     return () => {

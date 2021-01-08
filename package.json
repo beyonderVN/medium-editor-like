@@ -29,6 +29,7 @@
     "draft-js-static-toolbar-plugin": "^3.0.1",
     "draft-js-video-plugin": "^2.0.2",
     "draftjs-utils": "^0.10.2",
+    "lz-string": "^1.4.4",
     "node-sass": "^4.14.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
