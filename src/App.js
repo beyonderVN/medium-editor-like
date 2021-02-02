@@ -33,6 +33,25 @@ export const parseRawContent = (raw) => {
     return undefined
   }
 }
+const style = (
+  <style>
+    {`
+    .docsearch-key{--docsearch-key-gradient: linear-gradient(-225deg,#d5dbe4,#f8f8f8);
+    --docsearch-key-shadow: inset 0 -2px 0 0 #cdcde6,inset 0 0 1px 1px #fff,0 1px 2px 1px rgba(30,35,90,0.4);
+    align-items: center;
+    box-shadow: var(--docsearch-key-shadow);
+    display: flex;
+    height: 18px;
+    justify-content: center;
+    margin-right: 0.4em;
+    padding-bottom: 2px;
+    min-width: 20px;
+    padding:0 4px;
+    border-radius: 2px;
+    font-size: 9px;}
+    `}
+  </style>
+)
 function App() {
   const [content, setContent] = useState(initialState.content)
   const [saving, setSaving] = useState()
@@ -119,6 +138,7 @@ function App() {
         )}
       </div>
       <div className="self-start sticky top-0 flex-1 background rounded py-2 px-3 space-x-3">
+        {style}
         <div className="grid grid-cols-1 gap-3 ">
           <div className="font-bold text-gray-500 text-sm">
             Use keyboard shortcuts
@@ -146,9 +166,7 @@ function App() {
                       }
                       return (
                         <Fragment key={i}>
-                          <div className="py-1 px-3 rounded text-xs border border-gray-300 text-gray-600">
-                            {e}
-                          </div>
+                          <div className="docsearch-key">{e}</div>
                           {i < array.length - 2 && (
                             <Icon
                               className="text-xs text-gray-500"
